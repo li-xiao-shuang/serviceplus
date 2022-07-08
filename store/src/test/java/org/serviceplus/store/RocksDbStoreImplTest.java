@@ -37,17 +37,26 @@ public class RocksDbStoreImplTest {
     }
     
     @Test
-    public void put() {
+    public void testPut() {
         boolean put = rocksDbStore.put("key".getBytes(), "hello store".getBytes());
         Assert.assertTrue(put);
     }
     
     @Test
-    public void get() {
+    public void testGet() {
         String key = "key";
         String value = "hello store";
         rocksDbStore.put(key.getBytes(), value.getBytes());
         byte[] bytes = rocksDbStore.get(key.getBytes());
         Assert.assertEquals(value, new String(bytes));
+    }
+    
+    @Test
+    public void testDelete() {
+        String key = "key";
+        String value = "hello store";
+        rocksDbStore.put(key.getBytes(), value.getBytes());
+        boolean delete = rocksDbStore.delete(key.getBytes());
+        Assert.assertTrue(delete);
     }
 }
