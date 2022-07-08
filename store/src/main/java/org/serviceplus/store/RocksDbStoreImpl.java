@@ -19,6 +19,8 @@ package org.serviceplus.store;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Optional;
@@ -29,6 +31,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author lixiaoshuang
  */
 public class RocksDbStoreImpl extends AbstractStoreService {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbStoreImpl.class);
     
     private static final String DEFAULT_ROCKSDB_PATH = "rocksdb";
     
@@ -55,6 +59,7 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         File file = new File(rocksdbPath);
         if (!file.exists() && !file.isDirectory()) {
             boolean mkdir = file.mkdirs();
+            LOGGER.info("[RocksDbStoreImpl] Create a directory for the first time,mkdir:{}", mkdir);
         }
         
         //加载 RocksDB C++ 库的静态方法。
@@ -63,8 +68,10 @@ public class RocksDbStoreImpl extends AbstractStoreService {
             options.setCreateIfMissing(true);
             rocksdb = RocksDB.open(options, rocksdbPath);
         } catch (RocksDBException e) {
+            LOGGER.error("[RocksDbStoreImpl] store initialization error", e);
             throw new RuntimeException(e);
         }
+        LOGGER.info("[RocksDbStoreImpl] store initialization success");
     }
     
     @Override
@@ -72,8 +79,10 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         try {
             rocksdb.closeE();
         } catch (RocksDBException e) {
+            LOGGER.error("[RocksDbStoreImpl] store close error", e);
             throw new RuntimeException(e);
         }
+        LOGGER.info("[RocksDbStoreImpl] store close success");
     }
     
     @Override
@@ -81,6 +90,7 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         try {
             rocksdb.put(key, value);
         } catch (RocksDBException e) {
+            LOGGER.error("[RocksDbStoreImpl] put data error", e);
             throw new RuntimeException(e);
         }
         return true;
@@ -91,6 +101,7 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         try {
             return rocksdb.get(key);
         } catch (RocksDBException e) {
+            LOGGER.error("[RocksDbStoreImpl] get data error", e);
             throw new RuntimeException(e);
         }
     }

@@ -1,0 +1,35 @@
+<Configuration status="WARN" monitorInterval="300">
+    <properties>
+        <property name="LOG_HOME">logs</property>
+        <property name="FILE_NAME">store.log</property>
+    </properties>
+    <Appenders>
+        
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] [%l] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        
+        <RollingRandomAccessFile name="STORE_FILE"
+            fileName="${LOG_HOME}/${FILE_NAME}"
+            filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout
+                pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%l] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    
+    <Loggers>
+        <Logger name="STORE_LOG" level="info" additivity="false">
+            <AppenderRef ref="STORE_FILE"/>
+        </Logger>
+        
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="STORE_FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>
