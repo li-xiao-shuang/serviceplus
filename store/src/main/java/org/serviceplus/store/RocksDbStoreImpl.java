@@ -105,4 +105,15 @@ public class RocksDbStoreImpl extends AbstractStoreService {
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    public boolean delete(byte[] key) {
+        try {
+            rocksdb.delete(key);
+        } catch (RocksDBException e) {
+            LOGGER.error("[RocksDbStoreImpl] delete data error", e);
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
 }

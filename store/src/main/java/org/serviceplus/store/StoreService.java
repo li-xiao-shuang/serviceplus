@@ -26,6 +26,7 @@ public interface StoreService {
      *
      * @param key   key
      * @param value value
+     * @return 是否存储成功
      */
     boolean put(byte[] key, byte[] value);
     
@@ -33,7 +34,15 @@ public interface StoreService {
      * 获取指定 key 的 value
      *
      * @param key key
-     * @return value
+     * @return key 对应的 value
      */
     byte[] get(byte[] key);
+    
+    /**
+     * 删除指定 key
+     *
+     * @param key key
+     * @return 是否删除成功
+     */
+    boolean delete(byte[] key);
 }
