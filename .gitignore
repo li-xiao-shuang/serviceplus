@@ -25,5 +25,5 @@ hs_err_pid*
 
 .idea
 rocksdb
-store/target
+*/target
 logs
