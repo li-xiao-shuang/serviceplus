@@ -6,6 +6,9 @@ on:
       - master
     # 如果你想要进一步定义触发条件、路径等，可以查看文档
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+    paths:
+      - '.github/workflows/deploy.yml'
+      - 'website/**'
 
 jobs:
   deploy:
@@ -13,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: /website
+        working-directory: website
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
