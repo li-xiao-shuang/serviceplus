@@ -34,4 +34,4 @@ jobs:
           ACCESS_TOKEN: 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
           BRANCH: gh-pages
           FOLDER: build
-          BUILD_SCRIPT: npm install && npm run build
+          BUILD_SCRIPT: cd website && npm install && npm run build
