@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Service plus',
   tagline: 'Service Plus 致力于打造一个分布式、强一致性 服务+ 的一站式解决方案。',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://li-xiao-shuang.github.io/serviceplus/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
