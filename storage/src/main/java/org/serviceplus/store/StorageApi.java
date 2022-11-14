@@ -19,15 +19,30 @@ package org.serviceplus.store;
 /**
  * @author lixiaoshuang
  */
-public abstract class AbstractStoreService implements StoreService {
-    
+public interface StorageApi {
+
     /**
-     * 初始化存储插件
+     * 存储 K/V 数据
+     *
+     * @param key   key
+     * @param value value
+     * @return 是否存储成功
      */
-    protected abstract void init();
-    
+    boolean put(String key, String value);
+
     /**
-     * 关闭存储插件
+     * 获取指定 key 的 value
+     *
+     * @param key key
+     * @return key 对应的 value
      */
-    protected abstract void close();
+    String get(String key);
+
+    /**
+     * 删除指定 key
+     *
+     * @param key key
+     * @return 是否删除成功
+     */
+    boolean delete(String key);
 }
