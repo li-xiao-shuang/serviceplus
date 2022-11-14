@@ -20,7 +20,7 @@ package org.serviceplus.store;
  * @author lixiaoshuang
  */
 public interface StoreService {
-    
+
     /**
      * 存储 K/V 数据
      *
@@ -28,21 +28,21 @@ public interface StoreService {
      * @param value value
      * @return 是否存储成功
      */
-    boolean put(byte[] key, byte[] value);
-    
+    boolean put(String key, String value);
+
     /**
      * 获取指定 key 的 value
      *
      * @param key key
      * @return key 对应的 value
      */
-    byte[] get(byte[] key);
-    
+    String get(String key);
+
     /**
      * 删除指定 key
      *
      * @param key key
      * @return 是否删除成功
      */
-    boolean delete(byte[] key);
+    boolean delete(String key);
 }

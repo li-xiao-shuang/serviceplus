@@ -34,7 +34,7 @@ public class StoreStartUp {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        RocksDbStoreImpl rocksDbStore = new RocksDbStoreImpl(properties);
+        RocksDbStoreService rocksDbStore = new RocksDbStoreService(properties);
         rocksDbStore.init();
     }
 }

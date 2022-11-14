@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,25 +31,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author lixiaoshuang
  */
-public class RocksDbStoreImpl extends AbstractStoreService {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbStoreImpl.class);
-    
+public class RocksDbStoreService extends AbstractStoreService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbStoreService.class);
+
     private static final String DEFAULT_ROCKSDB_PATH = "rocksdb";
-    
+
     private static final String ROCKSDB_PATH_KEY = "rocksdb.path";
-    
+
     private static final AtomicBoolean INIT_STATUS = new AtomicBoolean(false);
-    
+
     private static RocksDB rocksdb;
-    
+
     private Properties properties;
-    
-    
-    public RocksDbStoreImpl(Properties properties) {
+
+
+    public RocksDbStoreService(Properties properties) {
         this.properties = properties;
     }
-    
+
     @Override
     public void init() {
         if (!INIT_STATUS.compareAndSet(false, true)) {
@@ -61,7 +62,7 @@ public class RocksDbStoreImpl extends AbstractStoreService {
             boolean mkdir = file.mkdirs();
             LOGGER.info("[RocksDbStoreImpl] Create a directory for the first time,mkdir:{}", mkdir);
         }
-        
+
         //加载 RocksDB C++ 库的静态方法。
         RocksDB.loadLibrary();
         try (Options options = new Options()) {
@@ -73,7 +74,7 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         }
         LOGGER.info("[RocksDbStoreImpl] store initialization success");
     }
-    
+
     @Override
     public void close() {
         try {
@@ -84,32 +85,32 @@ public class RocksDbStoreImpl extends AbstractStoreService {
         }
         LOGGER.info("[RocksDbStoreImpl] store close success");
     }
-    
+
     @Override
-    public boolean put(byte[] key, byte[] value) {
+    public boolean put(String key, String value) {
         try {
-            rocksdb.put(key, value);
+            rocksdb.put(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
         } catch (RocksDBException e) {
             LOGGER.error("[RocksDbStoreImpl] put data error", e);
             throw new RuntimeException(e);
         }
         return true;
     }
-    
+
     @Override
-    public byte[] get(byte[] key) {
+    public String get(String key) {
         try {
-            return rocksdb.get(key);
+            return new String(rocksdb.get(key.getBytes(StandardCharsets.UTF_8)));
         } catch (RocksDBException e) {
             LOGGER.error("[RocksDbStoreImpl] get data error", e);
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
-    public boolean delete(byte[] key) {
+    public boolean delete(String key) {
         try {
-            rocksdb.delete(key);
+            rocksdb.delete(key.getBytes(StandardCharsets.UTF_8));
         } catch (RocksDBException e) {
             LOGGER.error("[RocksDbStoreImpl] delete data error", e);
             throw new RuntimeException(e);

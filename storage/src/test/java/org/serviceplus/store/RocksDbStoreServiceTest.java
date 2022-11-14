@@ -24,39 +24,39 @@ import java.util.Properties;
 /**
  * @author lixiaoshuang
  */
-public class RocksDbStoreImplTest {
-    
-    private RocksDbStoreImpl rocksDbStore;
-    
+public class RocksDbStoreServiceTest {
+
+    private RocksDbStoreService rocksDbStore;
+
     @Before
     public void setUp() {
         Properties properties = new Properties();
         properties.setProperty("rocksdb.path", "target/rocksdb");
-        rocksDbStore = new RocksDbStoreImpl(properties);
+        rocksDbStore = new RocksDbStoreService(properties);
         rocksDbStore.init();
     }
-    
+
     @Test
     public void testPut() {
-        boolean put = rocksDbStore.put("key".getBytes(), "hello store".getBytes());
+        boolean put = rocksDbStore.put("key", "hello store");
         Assert.assertTrue(put);
     }
-    
+
     @Test
     public void testGet() {
         String key = "key";
         String value = "hello store";
-        rocksDbStore.put(key.getBytes(), value.getBytes());
-        byte[] bytes = rocksDbStore.get(key.getBytes());
-        Assert.assertEquals(value, new String(bytes));
+        rocksDbStore.put(key, value);
+        String returnValue = rocksDbStore.get(key);
+        Assert.assertEquals(value, returnValue);
     }
-    
+
     @Test
     public void testDelete() {
         String key = "key";
         String value = "hello store";
-        rocksDbStore.put(key.getBytes(), value.getBytes());
-        boolean delete = rocksDbStore.delete(key.getBytes());
+        rocksDbStore.put(key, value);
+        boolean delete = rocksDbStore.delete(key);
         Assert.assertTrue(delete);
     }
 }
