@@ -24,15 +24,15 @@ import java.util.Properties;
 /**
  * @author lixiaoshuang
  */
-public class RocksDbStoreServiceTest {
+public class RocksDbStorageApiTest {
 
-    private RocksDbStoreService rocksDbStore;
+    private RocksDbStorage rocksDbStore;
 
     @Before
     public void setUp() {
         Properties properties = new Properties();
         properties.setProperty("rocksdb.path", "target/rocksdb");
-        rocksDbStore = new RocksDbStoreService(properties);
+        rocksDbStore = new RocksDbStorage(properties);
         rocksDbStore.init();
     }
 

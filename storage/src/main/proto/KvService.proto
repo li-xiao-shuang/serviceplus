@@ -1,0 +1,19 @@
+syntax = "proto3";
+option java_package = "org.serviceplus.store.proto";
+import "google/protobuf/any.proto";
+
+
+message KvRequest{
+  string key = 1;
+  string value = 2;
+}
+
+message KvResponse{
+  repeated google.protobuf.Any data = 1;
+  string errorCode = 2;
+  string errorMessage = 3;
+}
+
+service KvService{
+  rpc put(KvRequest) returns (KvResponse);
+}

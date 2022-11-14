@@ -17,6 +17,12 @@
 package org.serviceplus.store;
 
 
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import org.serviceplus.store.service.KvServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -25,7 +31,9 @@ import java.util.Properties;
  * @author lixiaoshuang
  */
 public class StoreStartUp {
-    
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StoreStartUp.class);
+
     public static void main(String[] args) {
         Properties properties = new Properties();
         String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
@@ -34,7 +42,18 @@ public class StoreStartUp {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        RocksDbStoreService rocksDbStore = new RocksDbStoreService(properties);
+        RocksDbStorage rocksDbStore = new RocksDbStorage(properties);
         rocksDbStore.init();
+
+        // grpc server
+        ServerBuilder<?> serverBuilder = ServerBuilder.forPort(8866);
+        serverBuilder.addService(new KvServiceImpl());
+        Server server = serverBuilder.build();
+        try {
+            server.start();
+            LOGGER.info("The grpc server at the storage tier is successfully started.");
+        } catch (IOException e) {
+            LOGGER.error("The grpc server at the storage tier fails to be started.", e);
+        }
     }
 }

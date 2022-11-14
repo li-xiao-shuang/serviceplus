@@ -31,9 +31,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author lixiaoshuang
  */
-public class RocksDbStoreService extends AbstractStoreService {
+public class RocksDbStorage extends AbstractStorage {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbStoreService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbStorage.class);
 
     private static final String DEFAULT_ROCKSDB_PATH = "rocksdb";
 
@@ -46,7 +46,7 @@ public class RocksDbStoreService extends AbstractStoreService {
     private Properties properties;
 
 
-    public RocksDbStoreService(Properties properties) {
+    public RocksDbStorage(Properties properties) {
         this.properties = properties;
     }
 
