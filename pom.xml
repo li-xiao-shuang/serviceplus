@@ -10,6 +10,8 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>storage</module>
+        <module>broker</module>
+        <module>client</module>
     </modules>
 
     <properties>
@@ -22,6 +24,7 @@
         <slf4j-api.version>1.7.25</slf4j-api.version>
         <grpc.version>1.50.2</grpc.version>
         <javax.annotation-api.version>1.2</javax.annotation-api.version>
+        <springboot.version>2.7.5</springboot.version>
     </properties>
 
     <dependencies>
@@ -50,6 +53,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Import dependency management from Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--RocksDB-->
             <dependency>
                 <groupId>org.rocksdb</groupId>
