@@ -13,25 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.serviceplus.broker.exception;
 
-package org.serviceplus.broker;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * broker 启动类
- *
  * @author lixiaoshuang
  */
-@SpringBootApplication
-@ServletComponentScan
-public class BrokerApplication {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class BrokerException extends RuntimeException {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BrokerApplication.class, args);
+    private int errorCode;
+
+    private String errorMessage;
+
+    public BrokerException(String errorMessage) {
+        super(errorMessage);
     }
 
+    public BrokerException(int errorCode, String errorMessage) {
+        super(errorMessage);
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
 }

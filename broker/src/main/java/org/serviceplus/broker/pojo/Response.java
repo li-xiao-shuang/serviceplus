@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.serviceplus.broker.pojo;
 
-package org.serviceplus.broker;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * broker 启动类
- *
  * @author lixiaoshuang
  */
-@SpringBootApplication
-@ServletComponentScan
-public class BrokerApplication {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Response<T> {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BrokerApplication.class, args);
-    }
+    private int code;
+
+    private String message;
+
+    private T data;
 
 }

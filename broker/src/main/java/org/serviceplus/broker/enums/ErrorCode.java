@@ -13,25 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.serviceplus.broker.enums;
 
-package org.serviceplus.broker;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletComponentScan;
-
+import lombok.Getter;
 
 /**
- * broker 启动类
- *
  * @author lixiaoshuang
  */
-@SpringBootApplication
-@ServletComponentScan
-public class BrokerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BrokerApplication.class, args);
+public enum ErrorCode {
+    /**
+     * common code
+     */
+    SUCCESS(0, "success"),
+
+    FAIL(-1, "fail");
+
+
+    @Getter
+    private Integer code;
+
+    @Getter
+    private String message;
+
+    ErrorCode(Integer code, String message) {
+        this.code = code;
+        this.message = message;
     }
-
 }
