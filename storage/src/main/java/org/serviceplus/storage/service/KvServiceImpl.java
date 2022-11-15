@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.store.service;
+package org.serviceplus.storage.service;
 
 import io.grpc.stub.StreamObserver;
-import org.serviceplus.store.proto.KvServiceGrpc;
-import org.serviceplus.store.proto.KvServiceOuterClass;
+import org.serviceplus.storage.proto.KvServiceGrpc;
+import org.serviceplus.storage.proto.KvServiceOuterClass;
 
 /**
  * @author lixiaoshuang

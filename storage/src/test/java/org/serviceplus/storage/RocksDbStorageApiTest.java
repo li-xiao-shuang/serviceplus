@@ -1,4 +1,4 @@
-package org.serviceplus.store;/*
+package org.serviceplus.storage;/*
  * Copyright 2022 service plus open source organization.
  *
  * Licensed under the Apache License,Version2.0(the"License");
@@ -18,6 +18,7 @@ package org.serviceplus.store;/*
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.serviceplus.storage.api.RocksDbStorage;
 
 import java.util.Properties;
 

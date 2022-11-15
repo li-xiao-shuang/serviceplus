@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.serviceplus.store;
+package org.serviceplus.storage.api;
 
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;

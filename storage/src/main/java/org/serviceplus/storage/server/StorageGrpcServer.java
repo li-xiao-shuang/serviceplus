@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.store.server;
+package org.serviceplus.storage.server;
 
 import io.grpc.Server;
-import org.serviceplus.store.RocksDbStorage;
+import org.serviceplus.storage.api.RocksDbStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

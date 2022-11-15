@@ -14,32 +14,30 @@
  * limitations under the License.
  */
 
-package org.serviceplus.store;
+package org.serviceplus.storage;
 
 
 import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import org.serviceplus.store.server.StorageGrpcServerBuilder;
-import org.serviceplus.store.service.KvServiceImpl;
+import org.serviceplus.storage.server.StorageGrpcServerBuilder;
+import org.serviceplus.storage.service.ServiceRegister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * @author lixiaoshuang
  */
-public class StoreStartUp {
+public class StorageStartUp {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoreStartUp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageStartUp.class);
 
     public static void main(String[] args) {
         StorageGrpcServerBuilder storageGrpcServerBuilder = StorageGrpcServerBuilder.forPort(8866);
-        Server server = storageGrpcServerBuilder.addService(new KvServiceImpl()).build();
+        Server server = storageGrpcServerBuilder.addService(ServiceRegister.getBindableServiceList()).build();
         try {
             server.start();
+            Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
             LOGGER.info("The grpc server at the storage tier is successfully started.");
         } catch (IOException e) {
             LOGGER.error("The grpc server at the storage tier fails to be started.", e);

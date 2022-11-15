@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.store.server;
+package org.serviceplus.storage.server;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import io.grpc.*;
+import org.serviceplus.storage.service.ServiceRegister;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 /**
@@ -29,10 +33,14 @@ import java.util.concurrent.Executor;
  */
 public class StorageGrpcServerBuilder extends ServerBuilder {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageGrpcServerBuilder.class);
+
     private final ServerBuilder<?> serverBuilder;
 
     public StorageGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
         this.serverBuilder = serverBuilder;
+        ServiceRegister serviceRegister = new ServiceRegister();
+        serviceRegister.initialized();
     }
 
     /**
@@ -44,6 +52,20 @@ public class StorageGrpcServerBuilder extends ServerBuilder {
     public static StorageGrpcServerBuilder forPort(int port) {
         ServerBuilder<?> builder = ServerBuilder.forPort(port);
         return new StorageGrpcServerBuilder(builder);
+    }
+
+    /**
+     * 批量绑定服务实现到服务方法.
+     *
+     * @param bindableServices 服务实现
+     * @return StoreGrpcServerBuilder
+     */
+    public ServerBuilder addService(List<BindableService> bindableServices) {
+        for (BindableService bindableService : bindableServices) {
+            this.serverBuilder.addService(bindableService);
+            LOGGER.info("binding:" + bindableService.bindService().getServiceDescriptor().getName());
+        }
+        return this;
     }
 
 
