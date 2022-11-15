@@ -9,11 +9,12 @@ message KvRequest{
 }
 
 message KvResponse{
-  repeated google.protobuf.Any data = 1;
+  string date = 1;
   string errorCode = 2;
   string errorMessage = 3;
 }
 
 service KvService{
   rpc put(KvRequest) returns (KvResponse);
+  rpc get(KvRequest) returns (KvResponse);
 }

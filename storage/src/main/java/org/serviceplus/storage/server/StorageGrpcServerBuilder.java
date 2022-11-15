@@ -17,7 +17,7 @@ package org.serviceplus.storage.server;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import io.grpc.*;
-import org.serviceplus.storage.service.ServiceRegister;
+import org.serviceplus.storage.service.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +39,8 @@ public class StorageGrpcServerBuilder extends ServerBuilder {
 
     public StorageGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
         this.serverBuilder = serverBuilder;
-        ServiceRegister serviceRegister = new ServiceRegister();
-        serviceRegister.initialized();
+        ServiceManager serviceManager = new ServiceManager();
+        serviceManager.initialized();
     }
 
     /**

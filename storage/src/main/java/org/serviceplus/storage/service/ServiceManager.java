@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author lixiaoshuang
  */
-public class ServiceRegister {
+public class ServiceManager {
 
     private static final List<BindableService> BINDABLE_SERVICE_LIST = new ArrayList<>();
 

@@ -17,6 +17,8 @@ package org.serviceplus.storage.server;
 
 import io.grpc.Server;
 import org.serviceplus.storage.api.RocksDbStorage;
+import org.serviceplus.storage.api.StorageApi;
+import org.serviceplus.storage.api.StorageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,16 +44,10 @@ public class StorageGrpcServer extends Server {
 
     @Override
     public Server start() throws IOException {
-        // 先初始化 RocksDB
-        Properties properties = new Properties();
-        String path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        try {
-            properties.load(new FileReader(path + "/store.properties"));
-        } catch (IOException e) {
-            LOGGER.error("[StorageGrpcServer] Failed to read the configuration file.", e);
-        }
-        RocksDbStorage rocksDbStore = new RocksDbStorage(properties);
-        rocksDbStore.init();
+        // 先初始化 Storage
+        StorageManager storageManager = StorageManager.instance();
+        storageManager.initialized();
+
         // 启动 grpc 服务
         return server.start();
     }

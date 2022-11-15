@@ -16,21 +16,43 @@
 package org.serviceplus.storage.service;
 
 import io.grpc.stub.StreamObserver;
-import org.serviceplus.storage.proto.KvServiceGrpc;
-import org.serviceplus.storage.proto.KvServiceOuterClass;
+import org.serviceplus.storage.api.StorageApi;
+import org.serviceplus.storage.api.StorageManager;
+import org.serviceplus.store.proto.KvServiceGrpc;
+import org.serviceplus.store.proto.KvServiceOuterClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author lixiaoshuang
  */
 public class KvServiceImpl extends KvServiceGrpc.KvServiceImplBase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KvServiceImpl.class);
+
     @Override
     public void put(KvServiceOuterClass.KvRequest request, StreamObserver<KvServiceOuterClass.KvResponse> responseObserver) {
         String key = request.getKey();
         String value = request.getValue();
-        System.out.println("存储成功");
+        StorageManager storageManager = StorageManager.instance();
+        StorageApi storage = storageManager.getStorage();
+        boolean result = storage.put(key, value);
+        LOGGER.info("put operation,key:{},value:{},result:{}", key, value, result);
         KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
-                .newBuilder().setErrorCode("88888").setErrorMessage("存储成功").build();
+                .newBuilder().setErrorCode("0").setErrorMessage("").setDate(String.valueOf(result)).build();
+        responseObserver.onNext(kvResponse);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void get(KvServiceOuterClass.KvRequest request, StreamObserver<KvServiceOuterClass.KvResponse> responseObserver) {
+        String key = request.getKey();
+        StorageManager storageManager = StorageManager.instance();
+        StorageApi storage = storageManager.getStorage();
+        String value = storage.get(key);
+        LOGGER.info("get operation key:{},value:{}", key, value);
+        KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
+                .newBuilder().setErrorCode("0").setErrorMessage("").setDate(value).build();
         responseObserver.onNext(kvResponse);
         responseObserver.onCompleted();
     }

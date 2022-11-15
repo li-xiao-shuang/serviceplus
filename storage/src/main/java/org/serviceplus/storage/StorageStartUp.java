@@ -19,7 +19,7 @@ package org.serviceplus.storage;
 
 import io.grpc.Server;
 import org.serviceplus.storage.server.StorageGrpcServerBuilder;
-import org.serviceplus.storage.service.ServiceRegister;
+import org.serviceplus.storage.service.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public class StorageStartUp {
 
     public static void main(String[] args) {
         StorageGrpcServerBuilder storageGrpcServerBuilder = StorageGrpcServerBuilder.forPort(8866);
-        Server server = storageGrpcServerBuilder.addService(ServiceRegister.getBindableServiceList()).build();
+        Server server = storageGrpcServerBuilder.addService(ServiceManager.getBindableServiceList()).build();
         try {
             server.start();
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
