@@ -7,7 +7,7 @@ message KvRequest{
 }
 
 message KvResponse{
-  string date = 1;
+  string data = 1;
   string errorCode = 2;
   string errorMessage = 3;
 }

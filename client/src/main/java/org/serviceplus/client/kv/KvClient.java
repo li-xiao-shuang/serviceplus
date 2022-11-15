@@ -18,6 +18,21 @@ package org.serviceplus.client.kv;
 /**
  * @author lixiaoshuang
  */
-public class KvClient {
+public interface KvClient {
+    /**
+     * 存储 K/V 数据
+     *
+     * @param key   key
+     * @param value value
+     * @return 是否存储成功
+     */
+    boolean put(String key, String value);
 
+    /**
+     * 获取指定 key 的 value
+     *
+     * @param key key
+     * @return key 对应的 value
+     */
+    String get(String key);
 }

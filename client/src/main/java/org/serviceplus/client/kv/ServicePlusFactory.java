@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 public class ServicePlusFactory {
 
-    public static KvClient createKvClient(Properties properties){
-        return new KvClient();
+    public static KvClient createKvClient(Properties properties) {
+        return new DefaultKvClient(properties);
     }
 }
