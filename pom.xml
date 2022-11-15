@@ -12,6 +12,7 @@
         <module>storage</module>
         <module>broker</module>
         <module>client</module>
+        <module>common</module>
     </modules>
 
     <properties>
@@ -53,6 +54,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.serviceplus</groupId>
+                <artifactId>serviceplus-common</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
             <!-- Import dependency management from Spring Boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

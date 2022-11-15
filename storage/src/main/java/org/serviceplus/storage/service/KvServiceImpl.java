@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * kv 操作实现类.
+ *
  * @author lixiaoshuang
  */
 public class KvServiceImpl extends KvServiceGrpc.KvServiceImplBase {
