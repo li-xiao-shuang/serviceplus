@@ -18,7 +18,7 @@ package org.serviceplus.broker.util;
 
 
 import org.serviceplus.broker.enums.ErrorCode;
-import org.serviceplus.broker.pojo.Response;
+import org.serviceplus.broker.model.Response;
 
 /**
  * @author lixiaoshuang

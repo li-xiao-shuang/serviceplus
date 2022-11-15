@@ -16,11 +16,10 @@
 package org.serviceplus.broker.kv.controller;
 
 import org.serviceplus.broker.kv.storage.KvStorageClient;
-import org.serviceplus.broker.pojo.Response;
+import org.serviceplus.broker.kv.storage.KvStorageClientFactory;
+import org.serviceplus.broker.model.Response;
 import org.serviceplus.broker.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author lixiaoshuang
@@ -29,17 +28,16 @@ import javax.annotation.Resource;
 @RequestMapping(path = "kv/v1")
 public class KvController {
 
-    @Resource
-    private KvStorageClient kvStorageClient;
-
     @PostMapping(path = "put")
     public Response<Boolean> putKv(@RequestParam("key") String key, @RequestParam("value") String value) {
+        KvStorageClient kvStorageClient = KvStorageClientFactory.createKvStorageClient();
         boolean put = kvStorageClient.put(key, value);
         return ResponseUtil.success(put);
     }
 
     @GetMapping(path = "get")
     public Response getKv(@RequestParam("key") String key) {
+        KvStorageClient kvStorageClient = KvStorageClientFactory.createKvStorageClient();
         String value = kvStorageClient.get(key);
         return ResponseUtil.success(value);
     }

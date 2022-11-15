@@ -13,36 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.serviceplus.storage;
-
+package org.serviceplus.broker.server;
 
 import io.grpc.Server;
-import org.serviceplus.storage.server.StorageGrpcServerBuilder;
-import org.serviceplus.storage.service.StorageServiceManager;
+import org.serviceplus.broker.kv.service.BrokerServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 /**
+ * broker grpc 服务端启动类
+ *
  * @author lixiaoshuang
  */
-public class StorageStartUp {
+@Component
+public class BrokerGrpcServerStartUp {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StorageStartUp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrokerGrpcServerStartUp.class);
 
-    public static void main(String[] args) {
-        StorageGrpcServerBuilder storageGrpcServerBuilder = StorageGrpcServerBuilder.forPort(8866);
-        Server server = storageGrpcServerBuilder.addService(StorageServiceManager.getBindableServiceList()).build();
+    @PostConstruct
+    public void start() {
+        BrokerGrpcServerBuilder brokerGrpcServerBuilder = BrokerGrpcServerBuilder.forPort(8766);
+        Server server = brokerGrpcServerBuilder.addService(BrokerServiceManager.getBindableServiceList()).build();
         try {
             server.start();
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
-            LOGGER.info("The grpc server at the storage tier is successfully started.");
+            LOGGER.info("The grpc server at the broker tier is successfully started.");
         } catch (IOException e) {
-            LOGGER.error("The grpc server at the storage tier fails to be started.", e);
-        }
-        while (true) {
+            LOGGER.error("The grpc server at the broker tier fails to be started.", e);
         }
     }
 }

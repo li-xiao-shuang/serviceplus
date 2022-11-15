@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.storage.service;
+package org.serviceplus.broker.kv.service;
 
 import io.grpc.stub.StreamObserver;
-import org.serviceplus.storage.api.StorageApi;
-import org.serviceplus.storage.api.StorageManager;
+import org.serviceplus.broker.kv.storage.KvStorageClient;
+import org.serviceplus.broker.kv.storage.KvStorageClientFactory;
 import org.serviceplus.store.proto.KvServiceGrpc;
 import org.serviceplus.store.proto.KvServiceOuterClass;
 import org.slf4j.Logger;
@@ -28,17 +28,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author lixiaoshuang
  */
-public class KvServiceImpl extends KvServiceGrpc.KvServiceImplBase {
+public class BrokerKvStorageService extends KvServiceGrpc.KvServiceImplBase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KvServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrokerKvStorageService.class);
 
     @Override
     public void put(KvServiceOuterClass.KvRequest request, StreamObserver<KvServiceOuterClass.KvResponse> responseObserver) {
         String key = request.getKey();
         String value = request.getValue();
-        StorageManager storageManager = StorageManager.instance();
-        StorageApi storage = storageManager.getStorage();
-        boolean result = storage.put(key, value);
+        KvStorageClient kvStorageClient = KvStorageClientFactory.createKvStorageClient();
+        boolean result = kvStorageClient.put(key, value);
         LOGGER.info("put operation,key:{},value:{},result:{}", key, value, result);
         KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
                 .newBuilder().setErrorCode("0").setErrorMessage("").setDate(String.valueOf(result)).build();
@@ -49,9 +48,8 @@ public class KvServiceImpl extends KvServiceGrpc.KvServiceImplBase {
     @Override
     public void get(KvServiceOuterClass.KvRequest request, StreamObserver<KvServiceOuterClass.KvResponse> responseObserver) {
         String key = request.getKey();
-        StorageManager storageManager = StorageManager.instance();
-        StorageApi storage = storageManager.getStorage();
-        String value = storage.get(key);
+        KvStorageClient kvStorageClient = KvStorageClientFactory.createKvStorageClient();
+        String value = kvStorageClient.get(key);
         LOGGER.info("get operation key:{},value:{}", key, value);
         KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
                 .newBuilder().setErrorCode("0").setErrorMessage("").setDate(value).build();

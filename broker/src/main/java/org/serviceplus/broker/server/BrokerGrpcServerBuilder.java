@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.storage.server;
+package org.serviceplus.broker.server;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import io.grpc.*;
-import org.serviceplus.storage.service.StorageServiceManager;
+import org.serviceplus.broker.kv.service.BrokerServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,20 +27,20 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 /**
- * 存储模块 Grpc 服务端构建者.
+ * Grpc 服务端构建者.
  *
  * @author lixiaoshuang
  */
-public class StorageGrpcServerBuilder extends ServerBuilder {
+public class BrokerGrpcServerBuilder extends ServerBuilder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StorageGrpcServerBuilder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrokerGrpcServerBuilder.class);
 
     private final ServerBuilder<?> serverBuilder;
 
-    public StorageGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
+    public BrokerGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
         this.serverBuilder = serverBuilder;
-        StorageServiceManager storageServiceManager = new StorageServiceManager();
-        storageServiceManager.initialized();
+        BrokerServiceManager brokerServiceManager = new BrokerServiceManager();
+        brokerServiceManager.initialized();
     }
 
     /**
@@ -49,9 +49,9 @@ public class StorageGrpcServerBuilder extends ServerBuilder {
      * @param port 监听的端口
      * @return StoreGrpcServerBuilder
      */
-    public static StorageGrpcServerBuilder forPort(int port) {
+    public static BrokerGrpcServerBuilder forPort(int port) {
         ServerBuilder<?> builder = ServerBuilder.forPort(port);
-        return new StorageGrpcServerBuilder(builder);
+        return new BrokerGrpcServerBuilder(builder);
     }
 
     /**
@@ -118,6 +118,6 @@ public class StorageGrpcServerBuilder extends ServerBuilder {
 
     @Override
     public Server build() {
-        return new StorageGrpcServer(this.serverBuilder.build());
+        return new BrokerGrpcServer(this.serverBuilder.build());
     }
 }

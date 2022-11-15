@@ -13,31 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.storage.service;
+package org.serviceplus.broker.util;
 
-import io.grpc.BindableService;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
- * 绑定服务注册器.
- *
  * @author lixiaoshuang
  */
-public class ServiceManager {
+public class EnvUtil {
 
-    private static final List<BindableService> BINDABLE_SERVICE_LIST = new ArrayList<>();
+    private static ConfigurableEnvironment environment;
 
-    public void initialized() {
-        this.bindService(new KvServiceImpl());
+    public static void setEnvironment(ConfigurableEnvironment environment) {
+        EnvUtil.environment = environment;
     }
 
-    public void bindService(BindableService bindableService) {
-        BINDABLE_SERVICE_LIST.add(bindableService);
-    }
-
-    public static List<BindableService> getBindableServiceList() {
-        return BINDABLE_SERVICE_LIST;
+    public static String getProperty(String key, String defaultValue) {
+        return environment.getProperty(key, defaultValue);
     }
 }

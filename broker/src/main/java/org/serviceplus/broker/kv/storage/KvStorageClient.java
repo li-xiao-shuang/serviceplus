@@ -17,30 +17,26 @@ package org.serviceplus.broker.kv.storage;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.serviceplus.broker.util.EnvUtil;
 import org.serviceplus.store.proto.KvServiceGrpc;
 import org.serviceplus.store.proto.KvServiceOuterClass;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author lixiaoshuang
  */
-@Component
 public class KvStorageClient {
 
-    @Value("${serviceplus.storage.port:}")
     private int port;
 
-    @Value("${serviceplus.storage.host:}")
     private String host;
 
     private ManagedChannel channel;
+
     private KvServiceGrpc.KvServiceBlockingStub kvServiceBlockingStub;
 
-    @PostConstruct
     public void init() {
+        port = Integer.parseInt(EnvUtil.getProperty("serviceplus.storage.port", "8866"));
+        host = EnvUtil.getProperty("serviceplus.storage.host", "127.0.0.1");
         //初始化连接
         channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
