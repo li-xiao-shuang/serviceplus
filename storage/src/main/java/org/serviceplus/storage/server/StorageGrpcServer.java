@@ -13,50 +13,72 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.store.grpc;
+package org.serviceplus.storage.server;
 
 import io.grpc.Server;
+import org.serviceplus.storage.api.RocksDbStorage;
+import org.serviceplus.storage.api.StorageApi;
+import org.serviceplus.storage.api.StorageManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 存储模块 Grpc 服务端.
+ *
  * @author lixiaoshuang
  */
-public class StoreGrpcServer extends Server {
+public class StorageGrpcServer extends Server {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageGrpcServer.class);
+
+    private Server server;
+
+    public StorageGrpcServer(Server server) {
+        this.server = server;
+    }
 
     @Override
     public Server start() throws IOException {
-        return null;
+        // 先初始化 Storage
+        StorageManager storageManager = StorageManager.instance();
+        storageManager.initialized();
+
+        // 启动 grpc 服务
+        return server.start();
     }
 
     @Override
     public Server shutdown() {
-        return null;
+        return server.shutdown();
     }
 
     @Override
     public Server shutdownNow() {
-        return null;
+        return server.shutdownNow();
     }
 
     @Override
     public boolean isShutdown() {
-        return false;
+        return server.isShutdown();
     }
 
     @Override
     public boolean isTerminated() {
-        return false;
+        return server.isTerminated();
     }
 
     @Override
     public boolean awaitTermination(long l, TimeUnit timeUnit) throws InterruptedException {
-        return false;
+        return server.awaitTermination(l, timeUnit);
     }
 
     @Override
     public void awaitTermination() throws InterruptedException {
-
+        server.awaitTermination();
     }
 }

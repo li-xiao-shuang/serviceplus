@@ -13,36 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.serviceplus.broker.model;
 
-package org.serviceplus.store;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author lixiaoshuang
  */
-public interface StorageApi {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Response<T> {
 
-    /**
-     * 存储 K/V 数据
-     *
-     * @param key   key
-     * @param value value
-     * @return 是否存储成功
-     */
-    boolean put(String key, String value);
+    private int code;
 
-    /**
-     * 获取指定 key 的 value
-     *
-     * @param key key
-     * @return key 对应的 value
-     */
-    String get(String key);
+    private String message;
 
-    /**
-     * 删除指定 key
-     *
-     * @param key key
-     * @return 是否删除成功
-     */
-    boolean delete(String key);
+    private T data;
+
 }

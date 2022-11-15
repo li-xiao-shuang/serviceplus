@@ -13,21 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.serviceplus.broker.enums;
 
-package org.serviceplus.store;
+import lombok.Getter;
 
 /**
  * @author lixiaoshuang
  */
-public abstract class AbstractStorage implements StorageApi {
-    
+
+public enum ErrorCode {
     /**
-     * 初始化存储插件
+     * common code
      */
-    protected abstract void init();
-    
-    /**
-     * 关闭存储插件
-     */
-    protected abstract void close();
+    SUCCESS(0, "success"),
+
+    FAIL(-1, "fail");
+
+
+    @Getter
+    private Integer code;
+
+    @Getter
+    private String message;
+
+    ErrorCode(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

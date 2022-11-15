@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.serviceplus.store;
+package org.serviceplus.storage.api;
 
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
@@ -60,7 +60,7 @@ public class RocksDbStorage extends AbstractStorage {
         File file = new File(rocksdbPath);
         if (!file.exists() && !file.isDirectory()) {
             boolean mkdir = file.mkdirs();
-            LOGGER.info("[RocksDbStoreImpl] Create a directory for the first time,mkdir:{}", mkdir);
+            LOGGER.info("Create a directory for the first time,mkdir:{}", mkdir);
         }
 
         //加载 RocksDB C++ 库的静态方法。
@@ -69,10 +69,10 @@ public class RocksDbStorage extends AbstractStorage {
             options.setCreateIfMissing(true);
             rocksdb = RocksDB.open(options, rocksdbPath);
         } catch (RocksDBException e) {
-            LOGGER.error("[RocksDbStoreImpl] store initialization error", e);
+            LOGGER.error("Storage initialization error", e);
             throw new RuntimeException(e);
         }
-        LOGGER.info("[RocksDbStoreImpl] store initialization success");
+        LOGGER.info("Storage initialization success");
     }
 
     @Override
@@ -80,10 +80,10 @@ public class RocksDbStorage extends AbstractStorage {
         try {
             rocksdb.closeE();
         } catch (RocksDBException e) {
-            LOGGER.error("[RocksDbStoreImpl] store close error", e);
+            LOGGER.error("Storage close error", e);
             throw new RuntimeException(e);
         }
-        LOGGER.info("[RocksDbStoreImpl] store close success");
+        LOGGER.info("Storage close success");
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RocksDbStorage extends AbstractStorage {
         try {
             rocksdb.put(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
         } catch (RocksDBException e) {
-            LOGGER.error("[RocksDbStoreImpl] put data error", e);
+            LOGGER.error("put data error", e);
             throw new RuntimeException(e);
         }
         return true;
@@ -102,7 +102,7 @@ public class RocksDbStorage extends AbstractStorage {
         try {
             return new String(rocksdb.get(key.getBytes(StandardCharsets.UTF_8)));
         } catch (RocksDBException e) {
-            LOGGER.error("[RocksDbStoreImpl] get data error", e);
+            LOGGER.error("get data error", e);
             throw new RuntimeException(e);
         }
     }
@@ -112,7 +112,7 @@ public class RocksDbStorage extends AbstractStorage {
         try {
             rocksdb.delete(key.getBytes(StandardCharsets.UTF_8));
         } catch (RocksDBException e) {
-            LOGGER.error("[RocksDbStoreImpl] delete data error", e);
+            LOGGER.error("delete data error", e);
             throw new RuntimeException(e);
         }
         return true;
