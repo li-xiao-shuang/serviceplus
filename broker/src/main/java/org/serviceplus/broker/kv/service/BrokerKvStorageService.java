@@ -40,7 +40,7 @@ public class BrokerKvStorageService extends KvServiceGrpc.KvServiceImplBase {
         boolean result = kvStorageClient.put(key, value);
         LOGGER.info("put operation,key:{},value:{},result:{}", key, value, result);
         KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
-                .newBuilder().setErrorCode("0").setErrorMessage("").setDate(String.valueOf(result)).build();
+                .newBuilder().setErrorCode("0").setErrorMessage("").setData(String.valueOf(result)).build();
         responseObserver.onNext(kvResponse);
         responseObserver.onCompleted();
     }
@@ -52,7 +52,7 @@ public class BrokerKvStorageService extends KvServiceGrpc.KvServiceImplBase {
         String value = kvStorageClient.get(key);
         LOGGER.info("get operation key:{},value:{}", key, value);
         KvServiceOuterClass.KvResponse kvResponse = KvServiceOuterClass.KvResponse
-                .newBuilder().setErrorCode("0").setErrorMessage("").setDate(value).build();
+                .newBuilder().setErrorCode("0").setErrorMessage("").setData(value).build();
         responseObserver.onNext(kvResponse);
         responseObserver.onCompleted();
     }

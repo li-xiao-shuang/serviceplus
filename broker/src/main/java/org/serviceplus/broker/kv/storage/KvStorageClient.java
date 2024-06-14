@@ -55,7 +55,7 @@ public class KvStorageClient {
     public boolean put(String key, String value) {
         KvServiceOuterClass.KvRequest kvRequest = KvServiceOuterClass.KvRequest.newBuilder().setKey(key).setValue(value).build();
         KvServiceOuterClass.KvResponse kvResponse = kvServiceBlockingStub.put(kvRequest);
-        return Boolean.getBoolean(kvResponse.getDate());
+        return Boolean.getBoolean(kvResponse.getData());
     }
 
     /**
@@ -67,6 +67,6 @@ public class KvStorageClient {
     public String get(String key) {
         KvServiceOuterClass.KvRequest kvRequest = KvServiceOuterClass.KvRequest.newBuilder().setKey(key).build();
         KvServiceOuterClass.KvResponse kvResponse = kvServiceBlockingStub.get(kvRequest);
-        return kvResponse.getDate();
+        return kvResponse.getData();
     }
 }

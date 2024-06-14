@@ -49,13 +49,13 @@ public class DefaultKvClient implements KvClient {
     public boolean put(String key, String value) {
         KvServiceOuterClass.KvRequest kvRequest = KvServiceOuterClass.KvRequest.newBuilder().setKey(key).setValue(value).build();
         KvServiceOuterClass.KvResponse kvResponse = kvServiceBlockingStub.put(kvRequest);
-        return Boolean.parseBoolean(kvResponse.getDate());
+        return Boolean.parseBoolean(kvResponse.getData());
     }
 
     @Override
     public String get(String key) {
         KvServiceOuterClass.KvRequest kvRequest = KvServiceOuterClass.KvRequest.newBuilder().setKey(key).build();
         KvServiceOuterClass.KvResponse kvResponse = kvServiceBlockingStub.get(kvRequest);
-        return kvResponse.getDate();
+        return kvResponse.getData();
     }
 }
