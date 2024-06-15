@@ -13,6 +13,7 @@
         <module>broker</module>
         <module>client</module>
         <module>common</module>
+        <module>serviceplus-spring-boot-starter</module>
     </modules>
 
     <properties>
@@ -26,6 +27,8 @@
         <grpc.version>1.50.2</grpc.version>
         <javax.annotation-api.version>1.2</javax.annotation-api.version>
         <springboot.version>2.7.5</springboot.version>
+        <aspectjweaver.version>1.9.6</aspectjweaver.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
 
     <dependencies>
@@ -50,6 +53,10 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -57,6 +64,11 @@
             <dependency>
                 <groupId>org.serviceplus</groupId>
                 <artifactId>serviceplus-common</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.serviceplus</groupId>
+                <artifactId>serviceplus-client</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <!-- Import dependency management from Spring Boot -->
@@ -125,6 +137,11 @@
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-stub</artifactId>
                 <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

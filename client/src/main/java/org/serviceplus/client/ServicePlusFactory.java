@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.client.kv;
+package org.serviceplus.client;
+
+import org.serviceplus.client.register.DefaultRegisterClient;
+import org.serviceplus.client.register.RegisterClient;
+import org.serviceplus.client.kv.DefaultKvClient;
+import org.serviceplus.client.kv.KvClient;
 
 import java.util.Properties;
 
@@ -21,8 +26,23 @@ import java.util.Properties;
  * @author lixiaoshuang
  */
 public class ServicePlusFactory {
-
+    /**
+     * 创建kv客户端
+     *
+     * @param properties 配置文件
+     * @return kv客户端
+     */
     public static KvClient createKvClient(Properties properties) {
-        return new DefaultKvClient(properties);
+        return DefaultKvClient.getInstance(properties);
+    }
+
+    /**
+     * 创建注册客户端
+     *
+     * @param properties 配置文件
+     * @return 注册客户端
+     */
+    public static RegisterClient createRegisterClient(Properties properties) {
+        return DefaultRegisterClient.getInstance();
     }
 }

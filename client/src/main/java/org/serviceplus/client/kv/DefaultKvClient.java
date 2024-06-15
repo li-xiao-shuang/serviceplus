@@ -27,14 +27,22 @@ import java.util.Properties;
  */
 public class DefaultKvClient implements KvClient {
 
-    private Properties properties;
+    private static volatile DefaultKvClient instance;
+    private final ManagedChannel channel;
+    private final KvServiceGrpc.KvServiceBlockingStub kvServiceBlockingStub;
 
-    private ManagedChannel channel;
+    public static DefaultKvClient getInstance(Properties properties) {
+        if (instance == null) {
+            synchronized (DefaultKvClient.class) {
+                if (instance == null) {
+                    instance = new DefaultKvClient(properties);
+                }
+            }
+        }
+        return instance;
+    }
 
-    private KvServiceGrpc.KvServiceBlockingStub kvServiceBlockingStub;
-
-    public DefaultKvClient(Properties properties) {
-        this.properties = properties;
+    private DefaultKvClient(Properties properties) {
         String host = properties.getProperty("host");
         int post = Integer.parseInt(properties.getProperty("port"));
         //初始化连接
