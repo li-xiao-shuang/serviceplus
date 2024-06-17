@@ -1,0 +1,55 @@
+syntax = "proto3";
+option java_package = "org.serviceplus.register.proto";
+
+service SpServiceRegister {
+  rpc BidirectionalStreamingMethod(stream ClientRegisterRequest) returns (stream ServerRegisterRequest) {}
+}
+
+message ClientRegisterRequest {
+  oneof ClientPayload {
+    ServiceRegister serviceRegister = 1;                    // 服务注册
+    ServiceInvokeResponse serviceInvokeResponse = 2;        // 服务调用响应
+  }
+}
+
+message ServerRegisterRequest {
+  oneof ServerPayload {
+    ServiceInvoke serviceInvoke = 1;                       // 服务调用
+    ServiceRegisterResponse serviceRegisterResponse = 2;   // 服务注册响应
+  }
+}
+
+message ServiceRegister{
+  string applicationName = 1;               // 应用名
+  string ip = 2;                            // IP地址
+  string port = 3;                          // 端口
+  repeated ClientService clientService = 4; // 服务列表
+}
+
+message ClientService {
+  string className = 1;            // 全类名
+  string simpleClassName = 2;      // 简单类名
+  string serviceName = 3;          // 服务名
+  string methodName = 4;           // 方法名
+  repeated string paramNames = 5;  // 参数名称，使用列表
+  repeated string paramDesc = 6;   // 参数描述，使用列表
+  repeated string paramTypes = 7;  // 参数类型，这里使用字符串列表表示类名
+  string returnNames = 8;          // 返回值名称
+  string returnTypes = 9;          // 返回值类型，使用字符串表示类名
+}
+
+message ServiceInvoke{
+
+}
+
+message ServiceRegisterResponse{
+  string code = 1;                // 响应码
+  string message = 2;             // 响应消息
+  string data = 3;                // 响应数据
+}
+
+message ServiceInvokeResponse{
+  string code = 1;                // 响应码
+  string message = 2;             // 响应消息
+  string data = 3;                // 响应数据
+}

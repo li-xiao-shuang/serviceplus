@@ -31,7 +31,7 @@ import java.util.concurrent.Executor;
  *
  * @author lixiaoshuang
  */
-public class BrokerGrpcServerBuilder extends ServerBuilder {
+public class BrokerGrpcServerBuilder extends ServerBuilder<BrokerGrpcServerBuilder> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BrokerGrpcServerBuilder.class);
 
@@ -39,8 +39,7 @@ public class BrokerGrpcServerBuilder extends ServerBuilder {
 
     public BrokerGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
         this.serverBuilder = serverBuilder;
-        BrokerServiceManager brokerServiceManager = new BrokerServiceManager();
-        brokerServiceManager.initialized();
+        BrokerServiceManager.getInstance().initialized();
     }
 
     /**
@@ -60,7 +59,7 @@ public class BrokerGrpcServerBuilder extends ServerBuilder {
      * @param bindableServices 服务实现
      * @return StoreGrpcServerBuilder
      */
-    public ServerBuilder addService(List<BindableService> bindableServices) {
+    public BrokerGrpcServerBuilder addService(List<BindableService> bindableServices) {
         for (BindableService bindableService : bindableServices) {
             this.serverBuilder.addService(bindableService);
             LOGGER.info("binding:" + bindableService.bindService().getServiceDescriptor().getName());
@@ -70,48 +69,48 @@ public class BrokerGrpcServerBuilder extends ServerBuilder {
 
 
     @Override
-    public ServerBuilder directExecutor() {
+    public BrokerGrpcServerBuilder directExecutor() {
         return executor(MoreExecutors.directExecutor());
     }
 
     @Override
-    public ServerBuilder executor(@Nullable Executor executor) {
+    public BrokerGrpcServerBuilder executor(@Nullable Executor executor) {
         this.serverBuilder.executor(executor);
         return this;
     }
 
     @Override
-    public ServerBuilder addService(ServerServiceDefinition service) {
+    public BrokerGrpcServerBuilder addService(ServerServiceDefinition service) {
         this.serverBuilder.addService(service);
         return this;
     }
 
     @Override
-    public ServerBuilder addService(BindableService bindableService) {
+    public BrokerGrpcServerBuilder addService(BindableService bindableService) {
         this.serverBuilder.addService(bindableService);
         return this;
     }
 
     @Override
-    public ServerBuilder fallbackHandlerRegistry(@Nullable HandlerRegistry fallbackRegistry) {
+    public BrokerGrpcServerBuilder fallbackHandlerRegistry(@Nullable HandlerRegistry fallbackRegistry) {
         this.serverBuilder.fallbackHandlerRegistry(fallbackRegistry);
         return this;
     }
 
     @Override
-    public ServerBuilder useTransportSecurity(File certChain, File privateKey) {
+    public BrokerGrpcServerBuilder useTransportSecurity(File certChain, File privateKey) {
         this.serverBuilder.useTransportSecurity(certChain, privateKey);
         return this;
     }
 
     @Override
-    public ServerBuilder decompressorRegistry(@Nullable DecompressorRegistry registry) {
+    public BrokerGrpcServerBuilder decompressorRegistry(@Nullable DecompressorRegistry registry) {
         this.serverBuilder.decompressorRegistry(registry);
         return this;
     }
 
     @Override
-    public ServerBuilder compressorRegistry(@Nullable CompressorRegistry registry) {
+    public BrokerGrpcServerBuilder compressorRegistry(@Nullable CompressorRegistry registry) {
         this.serverBuilder.compressorRegistry(registry);
         return this;
     }

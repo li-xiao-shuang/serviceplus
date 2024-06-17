@@ -29,6 +29,17 @@ public class BrokerServiceManager {
 
     private static final List<BindableService> BINDABLE_SERVICE_LIST = new ArrayList<>();
 
+    private BrokerServiceManager() {
+    }
+
+    public static class BrokerServiceManagerHolder {
+        private static final BrokerServiceManager INSTANCE = new BrokerServiceManager();
+    }
+
+    public static BrokerServiceManager getInstance() {
+        return BrokerServiceManagerHolder.INSTANCE;
+    }
+
     public void initialized() {
         this.bindService(new BrokerKvStorageService());
     }
@@ -37,7 +48,7 @@ public class BrokerServiceManager {
         BINDABLE_SERVICE_LIST.add(bindableService);
     }
 
-    public static List<BindableService> getBindableServiceList() {
+    public List<BindableService> getBindableServiceList() {
         return BINDABLE_SERVICE_LIST;
     }
 }

@@ -43,6 +43,6 @@ public class ServicePlusFactory {
      * @return 注册客户端
      */
     public static RegisterClient createRegisterClient(Properties properties) {
-        return DefaultRegisterClient.getInstance();
+        return DefaultRegisterClient.getInstance(properties);
     }
 }

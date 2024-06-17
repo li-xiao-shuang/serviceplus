@@ -15,6 +15,7 @@
  */
 package org.serviceplus.broker.register;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.serviceplus.broker.model.AdminService;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author lixiaoshuang
  */
 @Component
+@Slf4j
 public class MemoryServiceRegisterCenter implements ServiceRegisterCenter {
     /**
      * 服务存储
@@ -34,10 +36,10 @@ public class MemoryServiceRegisterCenter implements ServiceRegisterCenter {
      */
     public static final Map<String, Map<String, Set<AdminService>>> SERVICE_MAP = new ConcurrentHashMap<>();
 
-
     @Override
     public void registerService(String applicationName, String applicationIp, AdminService service) {
         if (StringUtils.isBlank(applicationName) || StringUtils.isBlank(applicationIp) || service == null) {
+            log.error("register service error, applicationName: {}, applicationIp: {}, service: {}", applicationName, applicationIp, service);
             return;
         }
         SERVICE_MAP.computeIfAbsent(applicationName, k -> new ConcurrentHashMap<>())

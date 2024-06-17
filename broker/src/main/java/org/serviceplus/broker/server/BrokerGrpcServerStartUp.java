@@ -19,6 +19,7 @@ import io.grpc.Server;
 import org.serviceplus.broker.kv.service.BrokerServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -34,10 +35,13 @@ public class BrokerGrpcServerStartUp {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BrokerGrpcServerStartUp.class);
 
+    @Value("${serviceplus.broker.grpc.port:8766}")
+    private int port;
+
     @PostConstruct
     public void start() {
-        BrokerGrpcServerBuilder brokerGrpcServerBuilder = BrokerGrpcServerBuilder.forPort(8766);
-        Server server = brokerGrpcServerBuilder.addService(BrokerServiceManager.getBindableServiceList()).build();
+        BrokerGrpcServerBuilder brokerGrpcServerBuilder = BrokerGrpcServerBuilder.forPort(port);
+        Server server = brokerGrpcServerBuilder.addService(BrokerServiceManager.getInstance().getBindableServiceList()).build();
         try {
             server.start();
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
