@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.register;
+package org.serviceplus.broker.register.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.serviceplus.broker.model.AdminApplication;
+import org.serviceplus.broker.model.BrokerApplication;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class MemoryApplicationRegisterCenter implements ApplicationRegisterCente
      * 应用信息存储
      * 应用名 -> 应用列表
      */
-    private static final Map<String, Set<AdminApplication>> APPLICATION_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Set<BrokerApplication>> APPLICATION_MAP = new ConcurrentHashMap<>();
     /**
      * 应用ip存储
      * 应用名 -> 应用ip
@@ -45,7 +45,7 @@ public class MemoryApplicationRegisterCenter implements ApplicationRegisterCente
     public static final Map<String, Set<String>> APPLICATION_IP_MAP = new ConcurrentHashMap<>();
 
     @Override
-    public void registerApplication(String applicationName, AdminApplication application) {
+    public void registerApplication(String applicationName, BrokerApplication application) {
         if (StringUtils.isBlank(applicationName) || application == null) {
             log.error("register application error, applicationName: {}, application: {}", applicationName, application);
             return;

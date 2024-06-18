@@ -17,7 +17,6 @@ package org.serviceplus.broker.server;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import io.grpc.*;
-import org.serviceplus.broker.kv.service.BrokerServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

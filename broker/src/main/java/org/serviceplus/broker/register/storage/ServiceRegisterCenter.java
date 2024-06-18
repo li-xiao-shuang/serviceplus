@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.register;
+package org.serviceplus.broker.register.storage;
 
-import org.serviceplus.broker.model.AdminService;
+import org.serviceplus.broker.model.BrokerService;
 
 /**
  * @author lixiaoshuang
@@ -28,5 +28,5 @@ public interface ServiceRegisterCenter {
      * @param applicationIp   ip
      * @param service         服务
      */
-    void registerService(String applicationName, String applicationIp, AdminService service);
+    void registerService(String applicationName, String applicationIp, BrokerService service);
 }

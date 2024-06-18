@@ -96,7 +96,11 @@ public class SpRegisterScanner {
             spApplication.setIp(NetworkUtils.getLocalHostExactAddress());
             spApplication.setPort(this.getPort());
             spApplication.setSpServices(spServices);
-            RegisterClient registerClient = ServicePlusFactory.createRegisterClient(new Properties());
+            //todo 修改为读配置文件
+            Properties properties = new Properties();
+            properties.setProperty("host", "127.0.0.1");
+            properties.setProperty("port", "8766");
+            RegisterClient registerClient = ServicePlusFactory.createRegisterClient(properties);
             registerClient.register(spApplication);
         }
     }

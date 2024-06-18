@@ -16,7 +16,6 @@
 package org.serviceplus.broker.server;
 
 import io.grpc.Server;
-import org.serviceplus.broker.kv.service.BrokerServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +44,7 @@ public class BrokerGrpcServerStartUp {
         try {
             server.start();
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
-            LOGGER.info("The grpc server at the broker tier is successfully started.");
+            LOGGER.info("The grpc server at the broker tier is successfully started. port: {}", port);
         } catch (IOException e) {
             LOGGER.error("The grpc server at the broker tier fails to be started.", e);
         }

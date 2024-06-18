@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.register;
+package org.serviceplus.broker.register.storage;
 
-import org.serviceplus.broker.model.AdminApplication;
+import org.serviceplus.broker.model.BrokerApplication;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public interface ApplicationRegisterCenter {
      * @param applicationName 应用名
      * @param application     应用
      */
-    void registerApplication(String applicationName, AdminApplication application);
+    void registerApplication(String applicationName, BrokerApplication application);
 
     /**
      * 获取应用名列表

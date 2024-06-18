@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.kv.service;
+package org.serviceplus.broker.server;
 
 import io.grpc.BindableService;
+import org.serviceplus.broker.kv.service.BrokerKvStorageService;
+import org.serviceplus.broker.register.service.BrokerServiceRegisterService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class BrokerServiceManager {
 
     public void initialized() {
         this.bindService(new BrokerKvStorageService());
+        this.bindService(new BrokerServiceRegisterService());
     }
 
     public void bindService(BindableService bindableService) {

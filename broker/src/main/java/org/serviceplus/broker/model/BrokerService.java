@@ -23,7 +23,7 @@ import java.util.List;
  * @author lixiaoshuang
  */
 @Data
-public class AdminService {
+public class BrokerService {
     /**
      * 全类名
      */

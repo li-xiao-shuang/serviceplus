@@ -21,7 +21,7 @@ import lombok.Data;
  * @author lixiaoshuang
  */
 @Data
-public class AdminApplication {
+public class BrokerApplication {
     /**
      * 应用名
      */

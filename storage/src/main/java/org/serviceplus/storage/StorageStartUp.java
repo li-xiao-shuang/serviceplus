@@ -32,7 +32,7 @@ public class StorageStartUp {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageStartUp.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         StorageGrpcServerBuilder storageGrpcServerBuilder = StorageGrpcServerBuilder.forPort(8866);
         Server server = storageGrpcServerBuilder.addService(StorageServiceManager.getBindableServiceList()).build();
         try {
@@ -41,8 +41,10 @@ public class StorageStartUp {
             LOGGER.info("The grpc server at the storage tier is successfully started.");
         } catch (IOException e) {
             LOGGER.error("The grpc server at the storage tier fails to be started.", e);
-        }
-        while (true) {
+        }finally {
+            if (server!=null){
+                server.awaitTermination();
+            }
         }
     }
 }

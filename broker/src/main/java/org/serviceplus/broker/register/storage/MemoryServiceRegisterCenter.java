@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.register;
+package org.serviceplus.broker.register.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.serviceplus.broker.model.AdminService;
+import org.serviceplus.broker.model.BrokerService;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -34,10 +34,10 @@ public class MemoryServiceRegisterCenter implements ServiceRegisterCenter {
      * 服务存储
      * 应用名 -> 应用ip -> 服务列表
      */
-    public static final Map<String, Map<String, Set<AdminService>>> SERVICE_MAP = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, Set<BrokerService>>> SERVICE_MAP = new ConcurrentHashMap<>();
 
     @Override
-    public void registerService(String applicationName, String applicationIp, AdminService service) {
+    public void registerService(String applicationName, String applicationIp, BrokerService service) {
         if (StringUtils.isBlank(applicationName) || StringUtils.isBlank(applicationIp) || service == null) {
             log.error("register service error, applicationName: {}, applicationIp: {}, service: {}", applicationName, applicationIp, service);
             return;
