@@ -1,0 +1,80 @@
+{
+  "data": {
+    "banners": [
+      {
+        "id": "1",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/12/13/81f0025d-f6f6-4f4d-8a4b-d5157333457b.png",
+        "url": "/marketingCampaigns?code=spring-marketing",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "2",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/10/30/81bbcc31-cb17-416d-91b8-97a4bfb9cc43.png",
+        "url": "/marketingCampaigns?code=spring-marketing-2",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "3",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/10/30/acef3749-d475-4147-8375-3f102c58ce59.png",
+        "url": "",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "4",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/10/30/19d07b20-0645-4d72-856e-05934a33956b.png",
+        "url": "",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "5",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/10/30/b763c907-0ecc-4e24-a13b-608c01b7f3af.png",
+        "url": "",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "6",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2024/01/29/29d2cf99-57ed-425c-86b5-599df276079e.jpeg",
+        "url": "",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "7",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2023/10/30/3b58a2ac-24a7-45d9-ab05-752284faf36c.jpg",
+        "url": "",
+        "data": {
+          "routeKeyword": ""
+        }
+      },
+      {
+        "id": "8",
+        "uniqueId": "",
+        "src": "https://fliggy-axin.oss-cn-beijing.aliyuncs.com/axFiles/FIRST_PAGE_IMAGE/2024/01/30/000685f1-4a21-4b48-af63-3bae73d1ddfd.jpg",
+        "url": "/marketingCampaigns?code=early-bird-operation",
+        "data": {
+          "routeKeyword": ""
+        }
+      }
+    ]
+  },
+  "code": 200,
+  "message": "ok"
+}
