@@ -22,12 +22,14 @@ import org.serviceplus.store.proto.KvServiceGrpc;
 import org.serviceplus.store.proto.KvServiceOuterClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * kv 操作实现类.
  *
  * @author lixiaoshuang
  */
+@Service
 public class BrokerKvStorageService extends KvServiceGrpc.KvServiceImplBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BrokerKvStorageService.class);

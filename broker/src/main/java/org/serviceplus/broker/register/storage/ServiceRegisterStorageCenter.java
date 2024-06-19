@@ -13,37 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.client.model;
+package org.serviceplus.broker.register.storage;
 
-import lombok.Data;
+import org.serviceplus.broker.model.BrokerApplicationInfo;
+import org.serviceplus.broker.model.BrokerService;
 
 import java.util.List;
 
 /**
  * @author lixiaoshuang
  */
-@Data
-public class SpApplication {
+public interface ServiceRegisterStorageCenter {
     /**
-     * 应用名
-     */
-    private String applicationName;
-    /**
-     * ip
-     */
-    private String applicationIp;
-    /**
-     * 端口
-     */
-    private String applicationPort;
-    /**
-     * 应用类型
+     * 注册服务
      *
-     * @see org.serviceplus.client.ApplicationTypeEnum
+     * @param applicationInfo 应用信息
+     * @param service         服务
      */
-    private String applicationType;
+    void registerService(BrokerApplicationInfo applicationInfo, BrokerService service);
+
     /**
-     * 服务
+     * 获取服务
+     *
+     * @param applicationName 应用名
+     * @param applicationIp   ip
+     * @param applicationPort 端口
+     * @return 服务列表
      */
-    private List<SpService> spServices;
+    List<BrokerService> getService(String applicationName, String applicationIp, String applicationPort);
 }

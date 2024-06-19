@@ -15,8 +15,11 @@
  */
 package org.serviceplus.springboot.starter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.serviceplus.client.ApplicationTypeEnum;
 import org.serviceplus.client.ServicePlusFactory;
 import org.serviceplus.client.annotation.SpRegister;
+import org.serviceplus.client.exception.ClientException;
 import org.serviceplus.client.model.SpApplication;
 import org.serviceplus.client.model.SpService;
 import org.serviceplus.client.register.RegisterClient;
@@ -29,7 +32,6 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -68,34 +70,13 @@ public class SpRegisterScanner {
      */
     private void scanner() {
         if (beanFactory instanceof ListableBeanFactory) {
-            List<SpService> spServices = new ArrayList<>();
-            ((ListableBeanFactory) beanFactory).getBeansWithAnnotation(Component.class).values().forEach(bean -> {
-                Method[] methods = bean.getClass().getDeclaredMethods();
-                for (Method method : methods) {
-                    if (method.isAnnotationPresent(SpRegister.class)) {
-                        SpRegister spRegister = method.getAnnotation(SpRegister.class);
-                        SpService spService = SpService.builder()
-                                .className(method.getDeclaringClass().getName())
-                                .simpleClassName(method.getDeclaringClass().getSimpleName())
-                                .serviceName(spRegister.name())
-                                .methodName(method.getName())
-                                .paramNames(Stream.of(method.getParameters()).map(Parameter::getName)
-                                        .collect(Collectors.toList()))
-                                .paramDesc(Arrays.asList(spRegister.paramDesc().split(PARAM_DESC_SEPARATOR)))
-                                .paramTypes(Arrays.asList(method.getParameterTypes()))
-                                .returnNames(method.getReturnType().getName())
-                                .returnTypes(method.getReturnType())
-                                .build();
+            List<SpService> spServices = ((ListableBeanFactory) beanFactory).getBeansWithAnnotation(Component.class).values().stream()
+                    .flatMap(bean -> Arrays.stream(bean.getClass().getDeclaredMethods()))
+                    .filter(method -> method.isAnnotationPresent(SpRegister.class))
+                    .map(this::createSpService)
+                    .collect(Collectors.toList());
 
-                        spServices.add(spService);
-                    }
-                }
-            });
-            SpApplication spApplication = new SpApplication();
-            spApplication.setApplicationName(this.getApplicationName());
-            spApplication.setIp(NetworkUtils.getLocalHostExactAddress());
-            spApplication.setPort(this.getPort());
-            spApplication.setSpServices(spServices);
+            SpApplication spApplication = createSpApplication(spServices);
             //todo 修改为读配置文件
             Properties properties = new Properties();
             properties.setProperty("host", "127.0.0.1");
@@ -105,7 +86,49 @@ public class SpRegisterScanner {
         }
     }
 
+    /**
+     * 创建服务
+     *
+     * @param method 方法
+     * @return 服务
+     */
+    private SpService createSpService(Method method) {
+        SpRegister spRegister = method.getAnnotation(SpRegister.class);
+        return SpService.builder()
+                .className(method.getDeclaringClass().getName())
+                .simpleClassName(method.getDeclaringClass().getSimpleName())
+                .methodDesc(spRegister.name())
+                .methodName(method.getName())
+                .paramNames(Stream.of(method.getParameters()).map(Parameter::getName).collect(Collectors.toList()))
+                .paramDesc(Arrays.asList(spRegister.paramDesc().split(PARAM_DESC_SEPARATOR)))
+                .paramTypes(Arrays.asList(method.getParameterTypes()))
+                .returnNames(method.getReturnType().getName())
+                .returnTypes(method.getReturnType())
+                .build();
+    }
+
+    /**
+     * 创建应用
+     *
+     * @param spServices 服务列表
+     * @return 应用
+     */
+    private SpApplication createSpApplication(List<SpService> spServices) {
+        SpApplication spApplication = new SpApplication();
+        spApplication.setApplicationName(this.getApplicationName());
+        spApplication.setApplicationIp(NetworkUtils.getLocalHostExactAddress());
+        spApplication.setApplicationPort(this.getPort());
+        spApplication.setApplicationType(ApplicationTypeEnum.JAVA.name());
+        spApplication.setSpServices(spServices);
+        return spApplication;
+    }
+
+
     private String getApplicationName() {
+        String applicationName = environment.getProperty(EnvironmentConstant.APPLICATION_NAME);
+        if (StringUtils.isBlank(applicationName)) {
+            throw new ClientException("The application name is not configured.Check the configuration item: spring.application.name");
+        }
         return environment.getProperty(EnvironmentConstant.APPLICATION_NAME);
     }
 

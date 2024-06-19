@@ -16,37 +16,48 @@
 package org.serviceplus.broker.register.service;
 
 import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
 import org.serviceplus.register.proto.SpServiceRegisterGrpc;
 import org.serviceplus.register.proto.SpServiceRegisterOuterClass;
+import org.springframework.stereotype.Service;
 
 /**
  * @author lixiaoshuang
  */
+@Slf4j
+@Service
 public class BrokerServiceRegisterService extends SpServiceRegisterGrpc.SpServiceRegisterImplBase {
+
     @Override
-    public StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> bidirectionalStreamingMethod(StreamObserver<SpServiceRegisterOuterClass.ServerRegisterRequest> responseObserver) {
-        StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> streamObserver = new StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest>() {
-            @Override
-            public void onNext(SpServiceRegisterOuterClass.ClientRegisterRequest clientRegisterRequest) {
-                boolean b = clientRegisterRequest.hasServiceRegister();
-                if (b) {
-                    System.out.println("收到注册服务请求：" + clientRegisterRequest.getServiceRegister().getApplicationName());
-                }
-            }
+    public StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> bidirectionalStreamingMethod(
+            StreamObserver<SpServiceRegisterOuterClass.ServerRegisterRequest> responseObserver) {
+        StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> streamObserver =
+                new StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest>() {
+                    @Override
+                    public void onNext(SpServiceRegisterOuterClass.ClientRegisterRequest clientRegisterRequest) {
+                        boolean hasServiceRegister = clientRegisterRequest.hasServiceRegister();
+                        if (hasServiceRegister) {
+                            log.info("A request for registration services is received：{}",
+                                    clientRegisterRequest.getServiceRegister().getApplicationName());
+                            RegisterUnifiedProcessingCenter.registerApplicationAndService(clientRegisterRequest.getServiceRegister());
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable throwable) {
-                System.out.println("收到注册服务请求异常");
-            }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        System.out.println("收到注册服务请求异常");
+                    }
 
-            @Override
-            public void onCompleted() {
-                System.out.println("收到注册服务请求完成");
-            }
-        };
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("收到注册服务请求完成");
+                    }
+                };
         // 向客户端返回调用结果
-        SpServiceRegisterOuterClass.ServiceRegisterResponse registerResponse = SpServiceRegisterOuterClass.ServiceRegisterResponse.newBuilder().setMessage("注册服务成功").setCode("200").build();
-        responseObserver.onNext(SpServiceRegisterOuterClass.ServerRegisterRequest.newBuilder().setServiceRegisterResponse(registerResponse).build());
+        SpServiceRegisterOuterClass.ServiceRegisterResponse registerResponse = SpServiceRegisterOuterClass.ServiceRegisterResponse.newBuilder()
+                .setMessage("注册服务成功").setCode(200).build();
+        responseObserver.onNext(SpServiceRegisterOuterClass.ServerRegisterRequest.newBuilder()
+                .setServiceRegisterResponse(registerResponse).build());
         return streamObserver;
     }
 }

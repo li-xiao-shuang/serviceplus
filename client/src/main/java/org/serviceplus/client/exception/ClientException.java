@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 service plus open source organization.
+ * Copyright 2022 service plus open source organization.
  *
  * Licensed under the Apache License,Version2.0(the"License");
  * you may not use this file except in compliance with the License.
@@ -13,37 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.client.model;
+package org.serviceplus.client.exception;
 
 import lombok.Data;
-
-import java.util.List;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author lixiaoshuang
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SpApplication {
-    /**
-     * 应用名
-     */
-    private String applicationName;
-    /**
-     * ip
-     */
-    private String applicationIp;
-    /**
-     * 端口
-     */
-    private String applicationPort;
-    /**
-     * 应用类型
-     *
-     * @see org.serviceplus.client.ApplicationTypeEnum
-     */
-    private String applicationType;
-    /**
-     * 服务
-     */
-    private List<SpService> spServices;
+public class ClientException extends RuntimeException {
+
+    private int errorCode;
+
+    private String errorMessage;
+
+    public ClientException(String errorMessage) {
+        this.errorCode = -1;
+        this.errorMessage = errorMessage;
+    }
+
+    public ClientException(int errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
 }

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.client.model;
+package org.serviceplus.broker.model.vo;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -24,8 +23,7 @@ import java.util.List;
  * @author lixiaoshuang
  */
 @Data
-@Builder
-public class SpService {
+public class BrokerServiceVO {
     /**
      * 全类名
      */
@@ -35,31 +33,23 @@ public class SpService {
      */
     private String simpleClassName;
     /**
-     * 方法描述
-     */
-    private String methodDesc;
-    /**
      * 方法名
      */
     private String methodName;
     /**
-     * 参数名称
+     * 方法描述
      */
-    private List<String> paramNames;
+    private String methodDesc;
     /**
-     * 参数描述
+     * 参数信息
      */
-    private List<String> paramDesc;
-    /**
-     * 参数类型
-     */
-    private List<Class<?>> paramTypes;
+    private List<ParamInfoVO> paramInfos;
     /**
      * 返回值名称
      */
-    private String returnNames;
+    private String returnName;
     /**
      * 返回值类型
      */
-    private Class<?> returnTypes;
+    private String returnType;
 }
