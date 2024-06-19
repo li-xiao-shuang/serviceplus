@@ -18,9 +18,12 @@ package org.serviceplus.client.register;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
+import org.serviceplus.client.exception.ClientException;
 import org.serviceplus.client.kv.DefaultKvClient;
 import org.serviceplus.client.model.SpApplication;
 import org.serviceplus.client.model.SpService;
+import org.serviceplus.common.constant.ResponseCodeConstant;
 import org.serviceplus.register.proto.SpServiceRegisterGrpc;
 import org.serviceplus.register.proto.SpServiceRegisterOuterClass;
 
@@ -31,6 +34,7 @@ import java.util.Properties;
 /**
  * @author lixiaoshuang
  */
+@Slf4j
 public class DefaultRegisterClient implements RegisterClient {
 
     private static volatile DefaultRegisterClient instance;
@@ -53,33 +57,38 @@ public class DefaultRegisterClient implements RegisterClient {
         if (spApplication == null) {
             throw new IllegalArgumentException("spApplication is null");
         }
-        StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> streamObserver = spServiceRegisterStub.bidirectionalStreamingMethod(new StreamObserver<SpServiceRegisterOuterClass.ServerRegisterRequest>() {
-            @Override
-            public void onNext(SpServiceRegisterOuterClass.ServerRegisterRequest serverRegisterRequest) {
-                boolean hassed = serverRegisterRequest.hasServiceRegisterResponse();
-                if (hassed) {
-                    SpServiceRegisterOuterClass.ServiceRegisterResponse serviceRegisterResponse = serverRegisterRequest.getServiceRegisterResponse();
-                    System.out.println("接收到服务注册响应:");
-                    System.out.println(serviceRegisterResponse.getMessage());
-                    System.out.println(serviceRegisterResponse.getCode());
-                }
-            }
+        StreamObserver<SpServiceRegisterOuterClass.ClientRegisterRequest> streamObserver =
+                spServiceRegisterStub.bidirectionalStreamingMethod(new StreamObserver<SpServiceRegisterOuterClass.ServerRegisterRequest>() {
+                    @Override
+                    public void onNext(SpServiceRegisterOuterClass.ServerRegisterRequest serverRegisterRequest) {
+                        boolean hasServiceRegisterResponse = serverRegisterRequest.hasServiceRegisterResponse();
+                        if (hasServiceRegisterResponse) {
+                            SpServiceRegisterOuterClass.ServiceRegisterResponse serviceRegisterResponse =
+                                    serverRegisterRequest.getServiceRegisterResponse();
+                            if (ResponseCodeConstant.OK != serviceRegisterResponse.getCode()) {
+                                log.error("SpService register error:{}", serviceRegisterResponse.getMessage());
+                                throw new ClientException(serviceRegisterResponse.getCode(), serviceRegisterResponse.getMessage());
+                            }
+                            log.info("SpService register response:{}", serviceRegisterResponse.getMessage());
+                        }
+                    }
 
-            @Override
-            public void onError(Throwable throwable) {
-                System.out.println("服务注册失败:" + throwable.getMessage());
-            }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        log.error("SpService register error:{}", throwable.getMessage());
+                    }
 
-            @Override
-            public void onCompleted() {
-                System.out.println("服务注册完成");
-            }
-        });
+                    @Override
+                    public void onCompleted() {
+                        log.info("SpService register completed");
+                    }
+                });
         // 构建客户端请求
         SpServiceRegisterOuterClass.ServiceRegister serviceRegister = SpServiceRegisterOuterClass.ServiceRegister.newBuilder()
                 .setApplicationName(spApplication.getApplicationName())
-                .setIp(spApplication.getIp())
-                .setPort(spApplication.getPort())
+                .setApplicationIp(spApplication.getApplicationIp())
+                .setApplicationPort(spApplication.getApplicationPort())
+                .setApplicationType(spApplication.getApplicationType())
                 .addAllClientService(this.convertSpServices(spApplication.getSpServices()))
                 .build();
 
@@ -104,7 +113,7 @@ public class DefaultRegisterClient implements RegisterClient {
                     SpServiceRegisterOuterClass.ClientService.newBuilder();
             clientServiceBuilder.setClassName(spService.getClassName());
             clientServiceBuilder.setSimpleClassName(spService.getSimpleClassName());
-            clientServiceBuilder.setServiceName(spService.getServiceName());
+            clientServiceBuilder.setMethodDesc(spService.getMethodDesc());
             clientServiceBuilder.setMethodName(spService.getMethodName());
             if (spService.getParamNames() != null) {
                 clientServiceBuilder.addAllParamNames(spService.getParamNames());
@@ -122,9 +131,9 @@ public class DefaultRegisterClient implements RegisterClient {
             }
 
             // 设置返回值名称和类型（需要将Class<?>类型的返回值转换为字符串）
-            clientServiceBuilder.setReturnNames(spService.getReturnNames());
+            clientServiceBuilder.setReturnName(spService.getReturnNames());
             if (spService.getReturnTypes() != null) {
-                clientServiceBuilder.setReturnTypes(spService.getReturnTypes().getName());
+                clientServiceBuilder.setReturnType(spService.getReturnTypes().getName());
             }
             clientServices.add(clientServiceBuilder.build());
         }

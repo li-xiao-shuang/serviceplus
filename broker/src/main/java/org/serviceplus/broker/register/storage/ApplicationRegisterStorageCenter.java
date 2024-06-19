@@ -15,18 +15,34 @@
  */
 package org.serviceplus.broker.register.storage;
 
-import org.serviceplus.broker.model.BrokerService;
+import org.serviceplus.broker.model.BrokerApplicationInfo;
+
+import java.util.List;
 
 /**
  * @author lixiaoshuang
  */
-public interface ServiceRegisterCenter {
+public interface ApplicationRegisterStorageCenter {
     /**
-     * 注册服务
+     * 注册应用
      *
      * @param applicationName 应用名
-     * @param applicationIp   ip
-     * @param service         服务
+     * @param application     应用
      */
-    void registerService(String applicationName, String applicationIp, BrokerService service);
+    void registerApplication(String applicationName, BrokerApplicationInfo application);
+
+    /**
+     * 获取应用列表
+     *
+     * @return 应用列表
+     */
+    List<BrokerApplicationInfo> getApplicationList();
+
+    /**
+     * 获取应用ip列表
+     *
+     * @param applicationName 应用名
+     * @return ip列表
+     */
+    List<String> getApplicationIps(String applicationName);
 }

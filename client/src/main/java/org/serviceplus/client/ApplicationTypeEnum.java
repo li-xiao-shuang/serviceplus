@@ -13,37 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.client.model;
-
-import lombok.Data;
-
-import java.util.List;
+package org.serviceplus.client;
 
 /**
  * @author lixiaoshuang
  */
-@Data
-public class SpApplication {
-    /**
-     * 应用名
-     */
-    private String applicationName;
-    /**
-     * ip
-     */
-    private String applicationIp;
-    /**
-     * 端口
-     */
-    private String applicationPort;
-    /**
-     * 应用类型
-     *
-     * @see org.serviceplus.client.ApplicationTypeEnum
-     */
-    private String applicationType;
-    /**
-     * 服务
-     */
-    private List<SpService> spServices;
+public enum ApplicationTypeEnum {
+    JAVA;
 }

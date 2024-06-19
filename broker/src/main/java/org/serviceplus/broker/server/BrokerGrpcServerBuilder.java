@@ -38,7 +38,6 @@ public class BrokerGrpcServerBuilder extends ServerBuilder<BrokerGrpcServerBuild
 
     public BrokerGrpcServerBuilder(ServerBuilder<?> serverBuilder) {
         this.serverBuilder = serverBuilder;
-        BrokerServiceManager.getInstance().initialized();
     }
 
     /**

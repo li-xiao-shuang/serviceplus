@@ -27,7 +27,11 @@ public enum ErrorCode {
      */
     SUCCESS(0, "success"),
 
-    FAIL(-1, "fail");
+    FAIL(-1, "fail"),
+
+
+    PARAM_ERROR(1001, "param error"),
+    ;
 
 
     @Getter

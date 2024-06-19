@@ -16,42 +16,25 @@
 package org.serviceplus.broker.server;
 
 import io.grpc.BindableService;
+import lombok.Getter;
 import org.serviceplus.broker.kv.service.BrokerKvStorageService;
 import org.serviceplus.broker.register.service.BrokerServiceRegisterService;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 绑定服务注册器.
+ * GRPC绑定服务管理.
  *
  * @author lixiaoshuang
  */
+@Getter
+@Component
 public class BrokerServiceManager {
 
-    private static final List<BindableService> BINDABLE_SERVICE_LIST = new ArrayList<>();
+    @Resource
+    private List<BindableService> bindableServiceList;
 
-    private BrokerServiceManager() {
-    }
-
-    public static class BrokerServiceManagerHolder {
-        private static final BrokerServiceManager INSTANCE = new BrokerServiceManager();
-    }
-
-    public static BrokerServiceManager getInstance() {
-        return BrokerServiceManagerHolder.INSTANCE;
-    }
-
-    public void initialized() {
-        this.bindService(new BrokerKvStorageService());
-        this.bindService(new BrokerServiceRegisterService());
-    }
-
-    public void bindService(BindableService bindableService) {
-        BINDABLE_SERVICE_LIST.add(bindableService);
-    }
-
-    public List<BindableService> getBindableServiceList() {
-        return BINDABLE_SERVICE_LIST;
-    }
 }

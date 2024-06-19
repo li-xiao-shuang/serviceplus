@@ -33,9 +33,9 @@ public class BrokerService {
      */
     private String simpleClassName;
     /**
-     * 服务名
+     * 方法描述
      */
-    private String serviceName;
+    private String methodDesc;
     /**
      * 方法名
      */
@@ -51,13 +51,13 @@ public class BrokerService {
     /**
      * 参数类型
      */
-    private List<Class<?>> paramTypes;
+    private List<String> paramTypes;
     /**
      * 返回值名称
      */
-    private String returnNames;
+    private String returnName;
     /**
      * 返回值类型
      */
-    private Class<?> returnTypes;
+    private String returnType;
 }

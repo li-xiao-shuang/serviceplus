@@ -18,7 +18,7 @@ package org.serviceplus.broker.register.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.serviceplus.broker.model.BrokerApplication;
+import org.serviceplus.broker.model.BrokerApplicationInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,34 +32,47 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @Slf4j
-public class MemoryApplicationRegisterCenter implements ApplicationRegisterCenter {
+public class MemoryApplicationRegisterStorageCenter implements ApplicationRegisterStorageCenter {
     /**
      * 应用信息存储
      * 应用名 -> 应用列表
      */
-    private static final Map<String, Set<BrokerApplication>> APPLICATION_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Set<BrokerApplicationInfo>> APPLICATION_MAP = new ConcurrentHashMap<>();
     /**
      * 应用ip存储
      * 应用名 -> 应用ip
      */
     public static final Map<String, Set<String>> APPLICATION_IP_MAP = new ConcurrentHashMap<>();
 
+    public static class MemoryApplicationRegisterCenterHolder {
+        public static final MemoryApplicationRegisterStorageCenter INSTANCE = new MemoryApplicationRegisterStorageCenter();
+    }
+
+    public static MemoryApplicationRegisterStorageCenter getInstance() {
+        return MemoryApplicationRegisterCenterHolder.INSTANCE;
+    }
+
     @Override
-    public void registerApplication(String applicationName, BrokerApplication application) {
+    public void registerApplication(String applicationName, BrokerApplicationInfo application) {
         if (StringUtils.isBlank(applicationName) || application == null) {
             log.error("register application error, applicationName: {}, application: {}", applicationName, application);
             return;
         }
         APPLICATION_MAP.computeIfAbsent(applicationName, k -> ConcurrentHashMap.newKeySet()).add(application);
-        APPLICATION_IP_MAP.computeIfAbsent(applicationName, k -> ConcurrentHashMap.newKeySet()).add(application.getIp());
+        APPLICATION_IP_MAP.computeIfAbsent(applicationName, k -> ConcurrentHashMap.newKeySet()).add(application.getApplicationIp());
     }
 
     @Override
-    public List<String> getApplicationNames() {
-        if (CollectionUtils.isEmpty(APPLICATION_MAP.keySet())) {
-            return null;
+    public List<BrokerApplicationInfo> getApplicationList() {
+        Set<String> applicationNames = APPLICATION_MAP.keySet();
+        List<BrokerApplicationInfo> brokerApplicationInfos = new ArrayList<>();
+        for (String applicationName : applicationNames) {
+            Set<BrokerApplicationInfo> applications = APPLICATION_MAP.get(applicationName);
+            if (CollectionUtils.isNotEmpty(applications)) {
+                brokerApplicationInfos.addAll(applications);
+            }
         }
-        return new ArrayList<>(APPLICATION_MAP.keySet());
+        return brokerApplicationInfos;
     }
 
     @Override

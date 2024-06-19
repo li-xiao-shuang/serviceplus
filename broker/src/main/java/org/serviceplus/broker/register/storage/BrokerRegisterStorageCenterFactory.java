@@ -13,25 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.serviceplus.broker.model;
-
-import lombok.Data;
+package org.serviceplus.broker.register.storage;
 
 /**
  * @author lixiaoshuang
  */
-@Data
-public class BrokerApplication {
+public class BrokerRegisterStorageCenterFactory {
+
     /**
-     * 应用名
+     * 创建应用注册中心
+     *
+     * @return 应用注册中心
      */
-    private String applicationName;
+    public static ApplicationRegisterStorageCenter createApplicationRegisterStorageCenter() {
+        return MemoryApplicationRegisterStorageCenter.getInstance();
+    }
+
     /**
-     * ip
+     * 创建服务注册中心
+     *
+     * @return 服务注册中心
      */
-    private String ip;
-    /**
-     * 端口
-     */
-    private String port;
+    public static ServiceRegisterStorageCenter createServiceRegisterStorageCenter() {
+        return MemoryServiceRegisterStorageCenter.getInstance();
+    }
 }

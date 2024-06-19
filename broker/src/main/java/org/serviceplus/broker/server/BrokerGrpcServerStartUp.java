@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -36,11 +37,13 @@ public class BrokerGrpcServerStartUp {
 
     @Value("${serviceplus.broker.grpc.port:8766}")
     private int port;
+    @Resource
+    private BrokerServiceManager brokerServiceManager;
 
     @PostConstruct
     public void start() {
         BrokerGrpcServerBuilder brokerGrpcServerBuilder = BrokerGrpcServerBuilder.forPort(port);
-        Server server = brokerGrpcServerBuilder.addService(BrokerServiceManager.getInstance().getBindableServiceList()).build();
+        Server server = brokerGrpcServerBuilder.addService(brokerServiceManager.getBindableServiceList()).build();
         try {
             server.start();
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));

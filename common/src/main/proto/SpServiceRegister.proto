@@ -20,22 +20,23 @@ message ServerRegisterRequest {
 }
 
 message ServiceRegister{
-  string applicationName = 1;               // 应用名
-  string ip = 2;                            // IP地址
-  string port = 3;                          // 端口
-  repeated ClientService clientService = 4; // 服务列表
+  string applicationName = 1;                          // 应用名
+  string applicationIp = 2;                            // IP地址
+  string applicationPort = 3;                          // 端口
+  string applicationType = 4;                          // 应用类型
+  repeated ClientService clientService = 5;            // 服务列表
 }
 
 message ClientService {
   string className = 1;            // 全类名
   string simpleClassName = 2;      // 简单类名
-  string serviceName = 3;          // 服务名
+  string methodDesc = 3;           // 方法描述
   string methodName = 4;           // 方法名
   repeated string paramNames = 5;  // 参数名称，使用列表
   repeated string paramDesc = 6;   // 参数描述，使用列表
   repeated string paramTypes = 7;  // 参数类型，这里使用字符串列表表示类名
-  string returnNames = 8;          // 返回值名称
-  string returnTypes = 9;          // 返回值类型，使用字符串表示类名
+  string returnName = 8;           // 返回值名称
+  string returnType = 9;           // 返回值类型，使用字符串表示类名
 }
 
 message ServiceInvoke{
@@ -43,13 +44,13 @@ message ServiceInvoke{
 }
 
 message ServiceRegisterResponse{
-  string code = 1;                // 响应码
+  int32 code = 1;                 // 响应码
   string message = 2;             // 响应消息
   string data = 3;                // 响应数据
 }
 
 message ServiceInvokeResponse{
-  string code = 1;                // 响应码
+  int32 code = 1;                 // 响应码
   string message = 2;             // 响应消息
   string data = 3;                // 响应数据
 }
